@@ -2,27 +2,36 @@
 # preview: http://cl.ly/1y2x0W0E3t2C0F29043z
 
 # features:
-# path is autoshortened to ~30 characters
 # displays git status (if applicable in current folder)
-# turns username green if superuser, otherwise it is white
 
-# if superuser make the username green
-if [ $UID -eq 0 ]; then NCOLOR="green"; else NCOLOR="white"; fi
-shula
+autoload -U add-zsh-hook
+
 # prompt
-local om-yes="%(?,%{$fg[green]%}ॐ%{$reset_color%},%{$fg[red]%}☣%{$reset_color%})"
+local om_yes="%(?,%{$FG[033]%}ॐ%{$reset_color%},%{$FG[166]%}♻%{$reset_color%})"
 
 PROMPT='
-%{$fg[NCOLOR]%}%~
-${om-yes} %{reset-color%}'
+%{$FG[246]%}[%w %t]:%~%{$reset_color%} $(git_prompt_status)
+${om_yes}  %{$reset_color%}'
 
-RPROMPT='$(git_prompt_info)'
+RPROMPT='$(git_prompt_info) | $(git_prompt_short_sha)'
 
 # git theming
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[gray]%}(%{$fg_no_bold[yellow]%}%B"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%b%{$fg_bold[gray]%})%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$FG[242]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$FG[246]%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}✱"
+ZSH_THEME_GIT_PROMPT_DIRTY=" %{$GIT_DIRTY_COLOR%}⚒ "
+ZSH_THEME_GIT_PROMPT_SHA_BEFORE="%{$FG[242]%}"
+ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%}"
+GIT_DIRTY_COLOR=$FG[202] #202=orange
+GIT_CLEAN_COLOR=$FG[118]
+GIT_PROMPT_INFO=$FG[012]
+
+ZSH_THEME_GIT_PROMPT_ADDED="%{$FG[044]%}✚%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{$FG[178]%}✹%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DELETED="%{$FG[160]%}✖%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{$FG[227]%}➜%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$FG[048]%}═%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$FG[194]%}✭%{$reset_color%}"
 
 # LS colors, made with http://geoff.greer.fm/lscolors/
 export LSCOLORS="Gxfxcxdxbxegedabagacad"

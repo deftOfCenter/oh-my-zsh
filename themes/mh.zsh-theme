@@ -8,7 +8,6 @@
 
 # if superuser make the username green
 if [ $UID -eq 0 ]; then NCOLOR="green"; else NCOLOR="white"; fi
-shula
 # prompt
 local om-yes="%(?,%{$fg[green]%}ॐ%{$reset_color%},%{$fg[red]%}☣%{$reset_color%})"
 
